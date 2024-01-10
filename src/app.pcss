@@ -1,0 +1,30 @@
+/* Write your global styles here, in PostCSS syntax */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+#app {
+  @apply rounded-xl min-h-dvh bg-surface-900/50;
+}
+
+body {
+  @apply bg-transparent rounded-lg text-success-50;
+}
+
+@layer components {
+  .btn {
+    @apply rounded-md;
+  }
+
+  .titlebar {
+    @apply h-12 select-none flex justify-between items-center gap-1 px-2 rounded-t-lg;
+
+    &-button {
+      @apply inline-flex justify-center items-center w-8 h-8 p-0 btn rounded-full hover:bg-surface-600/50 transition-colors;
+
+      & img {
+        @apply w-4 h-4 invert opacity-50;
+      }
+    }
+  }
+}
