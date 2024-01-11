@@ -25,7 +25,8 @@
         "minimize": true,
         "unmaximize": true,
         "unminimize": true,
-        "startDragging": true
+        "startDragging": true,
+        "setAlwaysOnTop": true
       }
     },
     "bundle": {
@@ -46,12 +47,13 @@
     "windows": [
       {
         "fullscreen": false,
-        "resizable": true,
+        "resizable": false,
         "title": "Pomodoro",
-        "width": 450,
-        "height": 450,
+        "width": 275,
+        "height": 200,
+        "decorations": false,
         "transparent": true,
-        "decorations": false
+        "alwaysOnTop": true
       }
     ]
   }

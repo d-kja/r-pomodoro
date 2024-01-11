@@ -4,11 +4,11 @@
 @tailwind utilities;
 
 #app {
-  @apply rounded-xl min-h-dvh bg-surface-900/50;
+  @apply rounded-xl min-h-dvh bg-surface-900/90;
 }
 
 body {
-  @apply bg-transparent rounded-lg text-success-50;
+  @apply bg-transparent rounded-lg text-success-50 font-sans;
 }
 
 @layer components {
@@ -26,5 +26,21 @@ body {
         @apply w-4 h-4 invert opacity-50;
       }
     }
+  }
+
+  .controls {
+    @apply transition-colors;
+
+    & > svg {
+      @apply stroke-surface-400 w-5 h-5;
+    }
+    
+    &-fill > svg {
+      @apply stroke-none fill-surface-400 w-5 h-5;  
+    }
+  }
+
+  .timer > span {
+    @apply text-5xl opacity-35 font-bold tracking-wide;
   }
 }

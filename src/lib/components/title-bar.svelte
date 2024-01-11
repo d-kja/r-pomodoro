@@ -1,41 +1,36 @@
 <script>
   import { appWindow } from "@tauri-apps/api/window";
-
-  function handleMinimize() {
-    appWindow.minimize();
-  }
+  import { Minimize2, Settings, X } from "lucide-svelte";
 
   function handleClose() {
     appWindow.close();
   }
 </script>
 
-<nav data-tauri-drag-region class="titlebar">
-  <h1
-    class="ml-1 text-sm font-medium tracking-wide leading-snug uppercase opacity-30"
-  >
-    Pomodoro
-  </h1>
+<nav data-tauri-drag-region class="titlebar mx-1">
+  <div>
+    <button
+      class="btn controls mt-auto p-1 font-semibold text-surface-400/75 group"
+      title="Settings"
+    >
+      <Settings class="group-hover:stroke-surface-50" strokeWidth={1.5} />
+    </button>
+  </div>
 
   <div>
     <button
-      on:click={handleMinimize}
-      class="titlebar-button"
+      class="btn controls mt-auto p-1 font-semibold text-surface-400/75 group"
       title="Minimize"
-      id="titlebar-minimize"
     >
-      <img
-        src="https://api.iconify.design/mdi:window-minimize.svg"
-        alt="minimize"
-      />
+      <Minimize2 class="group-hover:stroke-surface-50" strokeWidth={1.5} />
     </button>
+
     <button
       on:click={handleClose}
+      class="btn controls mt-auto p-1 font-semibold text-surface-400/75 group"
       title="Close"
-      class="titlebar-button"
-      id="titlebar-close"
     >
-      <img src="https://api.iconify.design/mdi:close.svg" alt="close" />
+      <X class="group-hover:stroke-surface-50" strokeWidth={1.5} />
     </button>
   </div>
 </nav>

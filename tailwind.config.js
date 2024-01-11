@@ -12,14 +12,17 @@ const config = {
 		)
 	],
 	theme: {
-		extend: {},
+		extend: {
+			fontFamily: {
+				sans: ['Roboto Mono', 'Arial', 'sans-serif']
+			},
+		},
 	},
 	plugins: [
 		skeleton({
-      themes: { preset: [ "crimson" ] }
-    })
+			themes: { preset: ["crimson"] }
+		})
 	]
 }
 
 export default config;
-						
