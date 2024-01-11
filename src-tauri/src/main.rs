@@ -14,7 +14,7 @@
           .expect("Unsupported platform! 'apply_blur' is only supported on Windows");
         
         #[cfg(target_os = "linux")]
-        println!("Transparency is not supported in this OS, using fallback");
+        println!("Unsupported platform! Glass effect is not supported on this OS, using fallback");
   
         Ok(())
       })
