@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@tauri-apps/api": "^1.5.2",
+    "dayjs": "^1.11.10",
     "lucide-svelte": "^0.309.0"
   },
   "devDependencies": {

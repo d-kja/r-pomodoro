@@ -50,7 +50,7 @@
         "resizable": false,
         "title": "Pomodoro",
         "width": 275,
-        "height": 200,
+        "height": 125,
         "decorations": false,
         "transparent": true,
         "alwaysOnTop": true
