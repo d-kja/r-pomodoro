@@ -12,4 +12,4 @@ Not the finished version, but an initial concept. I want it to be simple and sma
 
 ![preview](https://i.imgur.com/nKPOrr4.png)
 
-The basic functions for cycle are already working. However, I still need to create options to minimize the app to the task bar and the configuration button. The config button is where the magic is going to happen, I'm planning on allowing theme, alert and timer customizations. 
+The basic functions for the cycle is already working. However, I still need to create options to minimize the app to the task bar and the configuration button. The config button is where the magic is going to happen, I'm planning on allowing theme, alert and timer customizations. 
