@@ -1,15 +1,15 @@
-import dayjs, { Dayjs } from "dayjs";
-import { writable, type Writable } from "svelte/store";
+import dayjs from "dayjs";
+import { writable } from "svelte/store";
+import { formatTime, formatTimes } from "../utils/cycle-utils";
 
 const SECOND_IN_MILLISECONDS = 1000;
-const MINUTE_IN_SECONDS = 60;
+const BASE_TIME = formatTimes("0:15");
 
 export type Cycle = {
 	isRunning: boolean;
 	startedAt: null | Date;
 	elapsedTime: null | number;
-	baseTime: [string, string];
-	currentTime: [string, string];
+	baseTime: string;
 	_interval: null | ReturnType<typeof setTimeout>;
 };
 
@@ -17,37 +17,25 @@ export const cycle = writable<Cycle>({
 	isRunning: false,
 	startedAt: null,
 	elapsedTime: null,
-	baseTime: ["25", "00"],
-	currentTime: ["25", "00"],
+	baseTime: BASE_TIME,
 	_interval: null,
 });
 
-const formatTime = (time: number) => time.toString().padStart(2, "0");
-
-export const setBaseTime = (newBaseTime: [string, string]) => {
-	const minutes = Number(newBaseTime[0]);
-	const seconds = Number(newBaseTime[1]);
-
-	if (minutes > 60 || minutes < 0) {
-		return;
-	}
-
-	if (seconds > 60 || seconds < 0) {
-		return;
-	}
-
-	cycle.update((value) => ({
-		...value,
-		baseTime: [formatTime(minutes), formatTime(seconds)],
-		currentTime: [formatTime(minutes), formatTime(seconds)],
-	}));
+export const setBaseTime = <M extends string, S extends string>(
+	newBaseTime: `${M}:${S}`,
+) => {
+	cycle.update((value) => {
+		return {
+			...value,
+			baseTime: newBaseTime,
+		};
+	});
 };
 
-export const updateTime = (updatedTime: [string, string]) => {
-	const minutes = Number(updatedTime[0]);
-	const seconds = Number(updatedTime[1]);
-
-	console.log(updatedTime);
+export const updateTime = <M extends string, S extends string>(
+	updatedTime: `${M}:${S}`,
+) => {
+	const [minutes, seconds] = updatedTime.split(":").map(Number);
 
 	if (minutes > 60 || minutes < 0) {
 		return;
@@ -63,48 +51,42 @@ export const updateTime = (updatedTime: [string, string]) => {
 	}));
 };
 
-type StartCycleParams = {
-	startingTime: Dayjs;
-};
+export const startCycle = () => {
+	cycle.update((value) => {
+		const startingTime = dayjs(value.startedAt ?? new Date());
 
-export const startCycle = ({ startingTime }: StartCycleParams) => {
-	cycle.update((value) => ({
-		...value,
-		isRunning: true,
-		startedAt: startingTime.toDate(),
-		elapsedTime: 0,
-		_interval: setInterval(() => {
-			const currentTime = dayjs();
+		return {
+			...value,
+			isRunning: true,
+			startedAt: startingTime.toDate(),
+			elapsedTime: 0,
+			_interval: setInterval(() => {
+				const currentTime = dayjs();
+				const [minutesToElapse, secondsToElapse] = value.baseTime
+					.split(":")
+					.map(Number);
 
-			const elapsed =
-				currentTime.diff(startingTime, "millisecond") / SECOND_IN_MILLISECONDS;
+				const timeToElapse = startingTime
+					.add(minutesToElapse, "minutes")
+					.add(secondsToElapse, "seconds");
+				const elapsed = timeToElapse.diff(currentTime) / SECOND_IN_MILLISECONDS;
 
-			const elapsedSeconds = Math.round(elapsed);
-			const elapsedMinutes =
-				Math.floor(elapsedSeconds / MINUTE_IN_SECONDS) % MINUTE_IN_SECONDS;
+				if (elapsed <= 0) {
+					resetCycle();
 
-			const baseMinutes = Number(value.baseTime[0]);
-			const baseSeconds = Number(value.baseTime[1]);
+					// I don't really need to return, because the cycle is going to vanish, but just in case...
+					return;
+				}
 
-			const diffSeconds = baseSeconds - elapsedSeconds;
-			const diffMinutes = elapsedMinutes + baseMinutes;
-
-			const updatedSeconds = (
-				diffSeconds + (baseSeconds % 60) === 0
-					? 60
-					: diffSeconds + baseSeconds < 0
-					  ? 60
-					  : diffSeconds + baseSeconds
-			).toString();
-			const updatedMinutes = diffMinutes.toString();
-
-			updateTime([updatedMinutes, updatedSeconds]);
-
-			cycle.update((value) => {
-				return { ...value, elapsedTime: elapsed };
-			});
-		}, 1000), // accurate to 1/10th of a second
-	}));
+				cycle.update((value) => {
+					return {
+						...value,
+						elapsedTime: elapsed,
+					};
+				});
+			}, 100), // accurate to 1/10th of a second
+		};
+	});
 };
 
 export const stopCycle = () => {
@@ -130,11 +112,11 @@ export const resetCycle = () => {
 
 		return {
 			...value,
-			elapsedTime: null,
-			startedAt: null,
-			currentTime: value.baseTime,
-			_interval: null,
 			isRunning: false,
+			startedAt: null,
+			elapsedTime: null,
+			baseTime: BASE_TIME,
+			_interval: null,
 		};
 	});
 };

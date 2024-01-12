@@ -1,12 +1,14 @@
 <script lang="ts">
-  import { ProgressBar } from "@skeletonlabs/skeleton";
   import Controls from "./control.svelte";
   import { cycle } from "../stores/cycle-store";
+  import { getTimeFromElapsed } from "../utils/cycle-utils";
 
-  let currentTime: [string, string] = ["30", "00"];
+  let currentTime: string[] = ["25", "00"];
 
   cycle.subscribe((value) => {
-    currentTime = value.currentTime;
+    currentTime = value.elapsedTime
+      ? getTimeFromElapsed(value.elapsedTime)
+      : value.baseTime.split(":");
   });
 
   $: minutes = currentTime[0];

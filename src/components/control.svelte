@@ -1,13 +1,12 @@
 <script lang="ts">
-  import { Play, Undo2, Settings, Pause } from "lucide-svelte";
+  import { Play, Undo2, Pause } from "lucide-svelte";
   import {
     cycle,
-    updateTime,
     type Cycle,
     startCycle,
     stopCycle,
+    resetCycle,
   } from "../stores/cycle-store";
-  import day from "dayjs";
 
   let currentCycle: Cycle | undefined;
 
@@ -16,23 +15,24 @@
   });
 
   const handleToggleCycle = () => {
-    const startingTime = day();
-
     if (!currentCycle?.isRunning) {
-      startCycle({ startingTime });
+      startCycle();
       return;
     }
 
     stopCycle();
   };
 
-  const handleResetCycle = () => {};
+  const handleResetCycle = () => {
+    resetCycle();
+  };
 </script>
 
 <div class="mt-auto flex justify-center gap-2">
   <button
     class="btn-icon rounded-full controls variant-glass-surface mt-auto font-semibold text-surface-400/75 group"
     title="Reset"
+    on:click={handleResetCycle}
   >
     <Undo2 class="group-hover:stroke-surface-50" strokeWidth={1.5} />
   </button>
