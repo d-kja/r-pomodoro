@@ -2,7 +2,7 @@
 
 A minimalistic Pomodoro desktop application built with Tauri, Svelte, and Skeleton UI
 
-The basic functions for the cycle is already working. However, I still need to create options to minimize the app to the task bar and the configuration button. The config button is where the magic is going to happen, I'm planning on allowing theme, alert and timer customizations. 
+The basic functionality for the cycle is already working. However, I still need to create options to minimize the app to the task bar and the configuration button. The config button is where the magic is going to happen, I'm planning on allowing theme, alert and timer customizations. 
 
 <br />
 
